@@ -1,7 +1,7 @@
 // This file is copied from https://github.com/flexdinesh/blogster/blob/main/packages/shared/src/seo.ts
 // I just modified it for my personal needs.
 
-type PageMeta = {
+type BaseMeta = {
   title: string;
   description?: string;
   canonicalUrl?: string;
@@ -28,7 +28,7 @@ type PageTwitterMeta = {
   imageAlt?: string;
 };
 
-type BlogPostOgMeta = {
+type PostOgMeta = {
   title: string;
   description?: string;
   type: 'article';
@@ -42,7 +42,7 @@ type BlogPostOgMeta = {
   imageHeight?: string;
 };
 
-type BlogPostTwitterMeta = {
+type PostTwitterMeta = {
   title: string;
   description?: string;
   card: 'summary_large_image';
@@ -72,7 +72,7 @@ export function getPageMeta({
   ogImageHeight?: number;
   siteOwnerTwitterHandle?: string;
   contentAuthorTwitterHandle?: string;
-}): { meta: PageMeta; og: PageOgMeta; twitter: PageTwitterMeta } {
+}): { meta: BaseMeta; og: PageOgMeta; twitter: PageTwitterMeta } {
   if (!pageTitle) {
     throw Error('title is required for page SEO');
   }
@@ -80,7 +80,7 @@ export function getPageMeta({
     ogImageAltText = !ogImageAltText ? `Preview image for ${pageTitle}` : ogImageAltText;
   }
 
-  const meta: PageMeta = { title: pageTitle, description: description };
+  const meta: BaseMeta = { title: pageTitle, description: description };
 
   const og: PageOgMeta = {
     title: pageTitle,
@@ -136,7 +136,7 @@ export function getBlogPostMeta({
   ogImageHeight?: number;
   siteOwnerTwitterHandle?: string;
   contentAuthorTwitterHandle?: string;
-}): { meta: PageMeta; og: BlogPostOgMeta; twitter: BlogPostTwitterMeta } {
+}): { meta: BaseMeta; og: PostOgMeta; twitter: PostTwitterMeta } {
   if (!pageTitle) {
     throw Error('title is required for page SEO');
   }
@@ -144,13 +144,13 @@ export function getBlogPostMeta({
     ogImageAltText = `Preview image for ${pageTitle}`;
   }
 
-  const meta: PageMeta = {
+  const meta: BaseMeta = {
     title: pageTitle,
     description: description,
     canonicalUrl,
   };
 
-  const og: BlogPostOgMeta = {
+  const og: PostOgMeta = {
     title: pageTitle,
     description: description,
     type: 'article',
@@ -163,7 +163,7 @@ export function getBlogPostMeta({
     imageHeight: ogImageHeight ? String(ogImageHeight) : undefined,
   };
 
-  const twitter: BlogPostTwitterMeta = {
+  const twitter: PostTwitterMeta = {
     title: pageTitle,
     description: description,
     card: 'summary_large_image',
